@@ -10,12 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,7 +26,6 @@ import com.plcoding.composegooglesignincleanarchitecture.presentation.sign_in.Si
 import com.plcoding.composegooglesignincleanarchitecture.presentation.sign_in.SignInViewModel
 import com.plcoding.composegooglesignincleanarchitecture.ui.theme.ComposeGoogleSignInCleanArchitectureTheme
 import kotlinx.coroutines.launch
-import kotlin.math.sign
 
 class MainActivity : ComponentActivity() {
 
@@ -104,20 +100,22 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("profile") {
                             ProfileScreen(
-                                userData = googleAuthUiClient.getSignedInUser(),
-                                onSignOut = {
-                                    lifecycleScope.launch {
-                                        googleAuthUiClient.signOut()
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "Signed out",
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                userData = googleAuthUiClient.getSignedInUser()
+                            ) {
+                                lifecycleScope.launch {
+                                    googleAuthUiClient.signOut()
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Signed out",
+                                        Toast.LENGTH_LONG
+                                    ).show()
 
-                                        navController.popBackStack()
-                                    }
+                                    navController.popBackStack()
                                 }
-                            )
+                            }
+                        }
+                        composable("pin_screen") {
+                            navController.navigate("PinScreen")
                         }
                     }
                 }

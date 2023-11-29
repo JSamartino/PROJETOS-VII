@@ -1,9 +1,11 @@
 package com.plcoding.composegooglesignincleanarchitecture.presentation.profile
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
@@ -13,10 +15,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,14 +30,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -49,6 +49,7 @@ import com.plcoding.composegooglesignincleanarchitecture.presentation.sign_in.Us
 fun ProfileScreen(
     userData: UserData?,
     onSignOut: () -> Unit,
+
 ) {
     val context = LocalContext.current
 
@@ -73,25 +74,49 @@ fun ProfileScreen(
         }
     })
 
+//    val currentUser = FirebaseAuth.getInstance().currentUser
+//    val database3 = FirebaseDatabase.getInstance()
+//    val usersReference = database3.getReference("userName") // Substitua "users" pelo nó correto em seu banco de dados
+//
+//    // Verificar se o usuário está cadastrado
+//    usersReference.child(currentUser?.uid ?: "").addListenerForSingleValueEvent(object : ValueEventListener {
+//        override fun onDataChange(dataSnapshot: DataSnapshot) {
+//            val isUserRegistered = dataSnapshot.exists()
+//
+//            if (!isUserRegistered) {
+//                // Se o usuário não estiver cadastrado, você pode direcioná-lo para a tela de cadastro ou realizar outras ações
+//                context.startActivity(Intent(context, CadastroActivity::class.java))
+//            }
+//        }
+//
+//        override fun onCancelled(databaseError: DatabaseError) {
+//            // Lidar com erro de banco de dados
+//        }
+//    })
+
+
+
+
     Surface(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+            .fillMaxWidth()
+            .padding(4.dp)
             .background(Color.White)
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+                .fillMaxWidth()
+                .padding(2.dp)
         ) {
             // Botão
             Button(
                 onClick = {
                     isDropdownVisible = true
+
                 },
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(8.dp)
+                    .padding(2.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
@@ -107,9 +132,7 @@ fun ProfileScreen(
                 DropdownMenuItem(
                     onClick = {
                         isDropdownVisible = false
-                        // Navegar para "pinScreen" sem depender de navController
-                        // (ajuste a navegação conforme necessário)
-//                         //findNavController().navigate("PinScreen")
+                        context.startActivity(Intent(context, Pin::class.java))
                     }
                 ) {
                     Text("PIN")
@@ -117,8 +140,8 @@ fun ProfileScreen(
                 DropdownMenuItem(
                     onClick = {
                         isDropdownVisible = false
-                        // Lógica quando a opção "Histórico" é selecionada
-                        // Adicione sua lógica aqui
+
+
                     }
                 ) {
                     Text("Histórico")
@@ -193,3 +216,6 @@ fun ProfileScreen(
         }
     }
 }
+
+
+
